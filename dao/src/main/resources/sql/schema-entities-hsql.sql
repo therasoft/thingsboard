@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS rule_chain (
     additional_info varchar,
     configuration varchar(10000000),
     name varchar(255),
+    type varchar(255),
     first_rule_node_id uuid,
     root boolean,
     debug_mode boolean,
@@ -157,6 +158,25 @@ CREATE TABLE IF NOT EXISTS rule_node_state (
     CONSTRAINT fk_rule_node_state_node_id FOREIGN KEY (rule_node_id) REFERENCES rule_node(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS firmware (
+    id uuid NOT NULL CONSTRAINT firmware_pkey PRIMARY KEY,
+    created_time bigint NOT NULL,
+    tenant_id uuid NOT NULL,
+    device_profile_id uuid ,
+    type varchar(32) NOT NULL,
+    title varchar(255) NOT NULL,
+    version varchar(255) NOT NULL,
+    file_name varchar(255),
+    content_type varchar(255),
+    checksum_algorithm varchar(32),
+    checksum varchar(1020),
+    data binary,
+    data_size bigint,
+    additional_info varchar,
+    search_text varchar(255),
+    CONSTRAINT firmware_tenant_title_version_unq_key UNIQUE (tenant_id, title, version)
+);
+
 CREATE TABLE IF NOT EXISTS device_profile (
     id uuid NOT NULL CONSTRAINT device_profile_pkey PRIMARY KEY,
     created_time bigint NOT NULL,
@@ -169,12 +189,16 @@ CREATE TABLE IF NOT EXISTS device_profile (
     search_text varchar(255),
     is_default boolean,
     tenant_id uuid,
+    firmware_id uuid,
+    software_id uuid,
     default_rule_chain_id uuid,
     default_queue_name varchar(255),
     provision_device_key varchar,
     CONSTRAINT device_profile_name_unq_key UNIQUE (tenant_id, name),
     CONSTRAINT device_provision_key_unq_key UNIQUE (provision_device_key),
-    CONSTRAINT fk_default_rule_chain_device_profile FOREIGN KEY (default_rule_chain_id) REFERENCES rule_chain(id)
+    CONSTRAINT fk_default_rule_chain_device_profile FOREIGN KEY (default_rule_chain_id) REFERENCES rule_chain(id),
+    CONSTRAINT fk_firmware_device_profile FOREIGN KEY (firmware_id) REFERENCES firmware(id),
+    CONSTRAINT fk_software_device_profile FOREIGN KEY (software_id) REFERENCES firmware(id)
 );
 
 CREATE TABLE IF NOT EXISTS device (
@@ -189,8 +213,12 @@ CREATE TABLE IF NOT EXISTS device (
     label varchar(255),
     search_text varchar(255),
     tenant_id uuid,
+    firmware_id uuid,
+    software_id uuid,
     CONSTRAINT device_name_unq_key UNIQUE (tenant_id, name),
-    CONSTRAINT fk_device_profile FOREIGN KEY (device_profile_id) REFERENCES device_profile(id)
+    CONSTRAINT fk_device_profile FOREIGN KEY (device_profile_id) REFERENCES device_profile(id),
+    CONSTRAINT fk_firmware_device FOREIGN KEY (firmware_id) REFERENCES firmware(id),
+    CONSTRAINT fk_software_device FOREIGN KEY (software_id) REFERENCES firmware(id)
 );
 
 CREATE TABLE IF NOT EXISTS device_credentials (
@@ -340,7 +368,6 @@ CREATE TABLE IF NOT EXISTS ts_kv_dictionary (
     CONSTRAINT ts_key_id_pkey PRIMARY KEY (key)
 );
 
-
 CREATE TABLE IF NOT EXISTS oauth2_client_registration_info (
     id uuid NOT NULL CONSTRAINT oauth2_client_registration_info_pkey PRIMARY KEY,
     enabled boolean,
@@ -423,4 +450,49 @@ CREATE TABLE IF NOT EXISTS api_usage_state (
     email_exec varchar(32),
     sms_exec varchar(32),
     CONSTRAINT api_usage_state_unq_key UNIQUE (tenant_id, entity_id)
+);
+
+CREATE TABLE IF NOT EXISTS resource (
+    id uuid NOT NULL CONSTRAINT resource_pkey PRIMARY KEY,
+    created_time bigint NOT NULL,
+    tenant_id uuid NOT NULL,
+    title varchar(255) NOT NULL,
+    resource_type varchar(32) NOT NULL,
+    resource_key varchar(255) NOT NULL,
+    search_text varchar(255),
+    file_name varchar(255) NOT NULL,
+    data varchar,
+    CONSTRAINT resource_unq_key UNIQUE (tenant_id, resource_type, resource_key)
+);
+
+CREATE TABLE IF NOT EXISTS edge (
+    id uuid NOT NULL CONSTRAINT edge_pkey PRIMARY KEY,
+    created_time bigint NOT NULL,
+    additional_info varchar,
+    customer_id uuid,
+    root_rule_chain_id uuid,
+    type varchar(255),
+    name varchar(255),
+    label varchar(255),
+    routing_key varchar(255),
+    secret varchar(255),
+    edge_license_key varchar(30),
+    cloud_endpoint varchar(255),
+    search_text varchar(255),
+    tenant_id uuid,
+    CONSTRAINT edge_name_unq_key UNIQUE (tenant_id, name),
+    CONSTRAINT edge_routing_key_unq_key UNIQUE (routing_key)
+);
+
+CREATE TABLE IF NOT EXISTS edge_event (
+    id uuid NOT NULL CONSTRAINT edge_event_pkey PRIMARY KEY,
+    created_time bigint NOT NULL,
+    edge_id uuid,
+    edge_event_type varchar(255),
+    edge_event_uid varchar(255),
+    entity_id uuid,
+    edge_event_action varchar(255),
+    body varchar(10000000),
+    tenant_id uuid,
+    ts bigint NOT NULL
 );

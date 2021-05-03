@@ -22,7 +22,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.thingsboard.server.common.data.DataConstants;
@@ -45,7 +44,7 @@ import org.thingsboard.server.gen.transport.TransportProtos.KeyValueType;
 import org.thingsboard.server.gen.transport.TransportProtos.PostAttributeMsg;
 import org.thingsboard.server.gen.transport.TransportProtos.PostTelemetryMsg;
 import org.thingsboard.server.gen.transport.TransportProtos.ProvisionDeviceResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ProvisionResponseStatus;
+import org.thingsboard.server.gen.transport.TransportProtos.ResponseStatus;
 import org.thingsboard.server.gen.transport.TransportProtos.TsKvListProto;
 import org.thingsboard.server.gen.transport.TransportProtos.TsKvProto;
 import org.thingsboard.server.gen.transport.TransportProtos.ValidateBasicMqttCredRequestMsg;
@@ -61,7 +60,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -76,10 +74,14 @@ public class JsonConverter {
 
     private static int maxStringValueLength = 0;
 
-    public static PostTelemetryMsg convertToTelemetryProto(JsonElement jsonElement) throws JsonSyntaxException {
+    public static PostTelemetryMsg convertToTelemetryProto(JsonElement jsonElement, long ts) throws JsonSyntaxException {
         PostTelemetryMsg.Builder builder = PostTelemetryMsg.newBuilder();
-        convertToTelemetry(jsonElement, System.currentTimeMillis(), null, builder);
+        convertToTelemetry(jsonElement, ts, null, builder);
         return builder.build();
+    }
+
+    public static PostTelemetryMsg convertToTelemetryProto(JsonElement jsonElement) throws JsonSyntaxException {
+        return convertToTelemetryProto(jsonElement, System.currentTimeMillis());
     }
 
     private static void convertToTelemetry(JsonElement jsonElement, long systemTs, Map<Long, List<KvEntry>> result, PostTelemetryMsg.Builder builder) {
@@ -158,15 +160,7 @@ public class JsonConverter {
             result.addProperty("id", msg.getRequestId());
         }
         result.addProperty("method", msg.getMethodName());
-        try {
-            result.add("params", JSON_PARSER.parse(msg.getParams()));
-        } catch (JsonSyntaxException ex) {
-            if (ex.getCause() instanceof MalformedJsonException) {
-                result.addProperty("params", msg.getParams());
-            } else {
-                throw ex;
-            }
-        }
+        result.add("params", JSON_PARSER.parse(msg.getParams()));
         return result;
     }
 
@@ -295,7 +289,7 @@ public class JsonConverter {
         return result;
     }
 
-    public static JsonElement toJson(AttributeUpdateNotificationMsg payload) {
+    public static JsonObject toJson(AttributeUpdateNotificationMsg payload) {
         JsonObject result = new JsonObject();
         if (payload.getSharedUpdatedCount() > 0) {
             payload.getSharedUpdatedList().forEach(addToObjectFromProto(result));
@@ -433,12 +427,12 @@ public class JsonConverter {
 
     private static JsonObject toJson(ProvisionDeviceResponseMsg payload, boolean toGateway, int requestId) {
         JsonObject result = new JsonObject();
-        if (payload.getStatus() == TransportProtos.ProvisionResponseStatus.NOT_FOUND) {
+        if (payload.getStatus() == ResponseStatus.NOT_FOUND) {
             result.addProperty("errorMsg", "Provision data was not found!");
-            result.addProperty("status", ProvisionResponseStatus.NOT_FOUND.name());
-        } else if (payload.getStatus() == TransportProtos.ProvisionResponseStatus.FAILURE) {
+            result.addProperty("status", ResponseStatus.NOT_FOUND.name());
+        } else if (payload.getStatus() == TransportProtos.ResponseStatus.FAILURE) {
             result.addProperty("errorMsg", "Failed to provision device!");
-            result.addProperty("status", ProvisionResponseStatus.FAILURE.name());
+            result.addProperty("status", ResponseStatus.FAILURE.name());
         } else {
             if (toGateway) {
                 result.addProperty("id", requestId);
@@ -451,9 +445,11 @@ public class JsonConverter {
                 case MQTT_BASIC:
                     result.add("credentialsValue", JSON_PARSER.parse(payload.getCredentialsValue()).getAsJsonObject());
                     break;
+                case LWM2M_CREDENTIALS:
+                    break;
             }
             result.addProperty("credentialsType", payload.getCredentialsType().name());
-            result.addProperty("status", ProvisionResponseStatus.SUCCESS.name());
+            result.addProperty("status", ResponseStatus.SUCCESS.name());
         }
         return result;
     }
@@ -562,6 +558,14 @@ public class JsonConverter {
         }
     }
 
+    public static JsonElement parse(String json) {
+        return JSON_PARSER.parse(json);
+    }
+
+    public static String toJson(JsonElement element) {
+        return GSON.toJson(element);
+    }
+
     public static void setTypeCastEnabled(boolean enabled) {
         isTypeCastEnabled = enabled;
     }
@@ -603,8 +607,7 @@ public class JsonConverter {
                 .build();
     }
 
-    private static TransportProtos.ProvisionDeviceCredentialsMsg buildProvisionDeviceCredentialsMsg(String
-                                                                                                            provisionKey, String provisionSecret) {
+    private static TransportProtos.ProvisionDeviceCredentialsMsg buildProvisionDeviceCredentialsMsg(String provisionKey, String provisionSecret) {
         return TransportProtos.ProvisionDeviceCredentialsMsg.newBuilder()
                 .setProvisionDeviceKey(provisionKey)
                 .setProvisionDeviceSecret(provisionSecret)

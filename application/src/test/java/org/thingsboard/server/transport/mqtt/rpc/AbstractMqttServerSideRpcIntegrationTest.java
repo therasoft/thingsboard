@@ -30,7 +30,7 @@ import org.junit.Assert;
 import org.thingsboard.server.common.data.Device;
 import org.thingsboard.server.common.data.TransportPayloadType;
 import org.thingsboard.server.common.data.device.profile.MqttTopics;
-import org.thingsboard.server.dao.util.mapping.JacksonUtil;
+import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.server.transport.mqtt.AbstractMqttIntegrationTest;
 
 import java.util.Arrays;
@@ -180,7 +180,7 @@ public abstract class AbstractMqttServerSideRpcIntegrationTest extends AbstractM
         return message;
     }
 
-    private class TestMqttCallback implements MqttCallback {
+    protected class TestMqttCallback implements MqttCallback {
 
         private final MqttAsyncClient client;
         private final CountDownLatch latch;
