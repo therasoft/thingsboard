@@ -15,7 +15,7 @@
 ///
 
 export const environment = {
-  appTitle: 'ThingsBoard',
+  appTitle: 'Effi.ai',
   production: true,
 // @ts-ignore
   tbVersion: TB_VERSION,
