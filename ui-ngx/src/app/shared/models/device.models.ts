@@ -492,6 +492,7 @@ export interface DeviceProfile extends BaseData<DeviceProfileId> {
   description?: string;
   default?: boolean;
   type: DeviceProfileType;
+  image?: string;
   transportType: DeviceTransportType;
   provisionType: DeviceProvisionType;
   provisionDeviceKey?: string;
@@ -505,6 +506,7 @@ export interface DeviceProfile extends BaseData<DeviceProfileId> {
 export interface DeviceProfileInfo extends EntityInfoData {
   type: DeviceProfileType;
   transportType: DeviceTransportType;
+  image?: string;
 }
 
 export interface DefaultDeviceConfiguration {
