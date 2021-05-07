@@ -88,7 +88,7 @@ public abstract class AbstractMqttIntegrationTest extends AbstractTransportInteg
         tenantAdmin = new User();
         tenantAdmin.setAuthority(Authority.TENANT_ADMIN);
         tenantAdmin.setTenantId(savedTenant.getId());
-        tenantAdmin.setEmail("tenant" + atomicInteger.getAndIncrement() + "@thingsboard.org");
+        tenantAdmin.setEmail("tenant" + atomicInteger.getAndIncrement() + "@effi.ai");
         tenantAdmin.setFirstName("Joe");
         tenantAdmin.setLastName("Downs");
 

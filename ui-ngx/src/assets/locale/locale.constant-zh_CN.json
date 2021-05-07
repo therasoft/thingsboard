@@ -1668,10 +1668,10 @@
       "file-storage": "文件存储",
       "memory-storage": "内存存储"
     },
-    "thingsboard": "ThingsBoard",
-    "thingsboard-host": "ThingsBoard主机",
+    "thingsboard": "Effi.ai",
+    "thingsboard-host": "Effi.ai主机",
     "thingsboard-host-required": "主机必填。",
-    "thingsboard-port": "ThingsBoard端口",
+    "thingsboard-port": "Effi.ai端口",
     "thingsboard-port-max": "最大端口号为65535。",
     "thingsboard-port-min": "最小端口号为1。",
     "thingsboard-port-pattern": "端口无效。",

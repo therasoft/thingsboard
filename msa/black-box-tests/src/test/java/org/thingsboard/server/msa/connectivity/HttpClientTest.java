@@ -41,7 +41,7 @@ public class HttpClientTest extends AbstractContainerTest {
 
     @Test
     public void telemetryUpload() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
 
         Device device = createDevice("http_");
         DeviceCredentials deviceCredentials = restClient.getDeviceCredentialsByDeviceId(device.getId()).get();
@@ -69,7 +69,7 @@ public class HttpClientTest extends AbstractContainerTest {
 
     @Test
     public void getAttributes() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         TB_TOKEN = restClient.getToken();
 
         Device device = createDevice("test");

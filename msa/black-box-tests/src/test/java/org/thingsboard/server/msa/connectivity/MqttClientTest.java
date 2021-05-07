@@ -60,7 +60,7 @@ public class MqttClientTest extends AbstractContainerTest {
 
     @Test
     public void telemetryUpload() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         Device device = createDevice("mqtt_");
         DeviceCredentials deviceCredentials = restClient.getDeviceCredentialsByDeviceId(device.getId()).get();
 
@@ -87,7 +87,7 @@ public class MqttClientTest extends AbstractContainerTest {
     public void telemetryUploadWithTs() throws Exception {
         long ts = 1451649600512L;
 
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         Device device = createDevice("mqtt_");
         DeviceCredentials deviceCredentials = restClient.getDeviceCredentialsByDeviceId(device.getId()).get();
 
@@ -111,7 +111,7 @@ public class MqttClientTest extends AbstractContainerTest {
 
     @Test
     public void publishAttributeUpdateToServer() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         Device device = createDevice("mqtt_");
         DeviceCredentials deviceCredentials = restClient.getDeviceCredentialsByDeviceId(device.getId()).get();
 
@@ -142,7 +142,7 @@ public class MqttClientTest extends AbstractContainerTest {
 
     @Test
     public void requestAttributeValuesFromServer() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         Device device = createDevice("mqtt_");
         DeviceCredentials deviceCredentials = restClient.getDeviceCredentialsByDeviceId(device.getId()).get();
 
@@ -202,7 +202,7 @@ public class MqttClientTest extends AbstractContainerTest {
 
     @Test
     public void subscribeToAttributeUpdatesFromServer() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         Device device = createDevice("mqtt_");
         DeviceCredentials deviceCredentials = restClient.getDeviceCredentialsByDeviceId(device.getId()).get();
 
@@ -248,7 +248,7 @@ public class MqttClientTest extends AbstractContainerTest {
 
     @Test
     public void serverSideRpc() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         Device device = createDevice("mqtt_");
         DeviceCredentials deviceCredentials = restClient.getDeviceCredentialsByDeviceId(device.getId()).get();
 
@@ -295,7 +295,7 @@ public class MqttClientTest extends AbstractContainerTest {
 
     @Test
     public void clientSideRpc() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         Device device = createDevice("mqtt_");
         DeviceCredentials deviceCredentials = restClient.getDeviceCredentialsByDeviceId(device.getId()).get();
 

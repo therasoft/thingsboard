@@ -79,7 +79,7 @@ public abstract class BaseEntityViewControllerTest extends AbstractControllerTes
         tenantAdmin = new User();
         tenantAdmin.setAuthority(Authority.TENANT_ADMIN);
         tenantAdmin.setTenantId(savedTenant.getId());
-        tenantAdmin.setEmail("tenant2@thingsboard.org");
+        tenantAdmin.setEmail("tenant2@effi.ai");
         tenantAdmin.setFirstName("Joe");
         tenantAdmin.setLastName("Downs");
         tenantAdmin = createUserAndLogin(tenantAdmin, "testPassword1");
@@ -205,7 +205,7 @@ public abstract class BaseEntityViewControllerTest extends AbstractControllerTes
         User tenantAdmin2 = new User();
         tenantAdmin2.setAuthority(Authority.TENANT_ADMIN);
         tenantAdmin2.setTenantId(savedTenant2.getId());
-        tenantAdmin2.setEmail("tenant3@thingsboard.org");
+        tenantAdmin2.setEmail("tenant3@effi.ai");
         tenantAdmin2.setFirstName("Joe");
         tenantAdmin2.setLastName("Downs");
         createUserAndLogin(tenantAdmin2, "testPassword1");

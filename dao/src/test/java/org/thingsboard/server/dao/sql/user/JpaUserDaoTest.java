@@ -58,7 +58,7 @@ public class JpaUserDaoTest extends AbstractJpaDaoTest {
     @Test
     @DatabaseSetup("classpath:dbunit/user.xml")
     public void testFindByEmail() {
-        User user = userDao.findByEmail(AbstractServiceTest.SYSTEM_TENANT_ID,"sysadm@thingsboard.org");
+        User user = userDao.findByEmail(AbstractServiceTest.SYSTEM_TENANT_ID,"sysadm@effi.ai");
         assertNotNull("User is expected to be not null", user);
         assertEquals("9cb58ba0-27c1-11e7-93ae-92361f002671", user.getId().toString());
         assertEquals("c97ea14e-27c1-11e7-93ae-92361f002671", user.getTenantId().toString());
@@ -113,7 +113,7 @@ public class JpaUserDaoTest extends AbstractJpaDaoTest {
         user.setId(new UserId(UUID.fromString("cd481534-27cc-11e7-93ae-92361f002671")));
         user.setTenantId(new TenantId(UUID.fromString("1edcb2c6-27cb-11e7-93ae-92361f002671")));
         user.setCustomerId(new CustomerId(UUID.fromString("51477cb4-27cb-11e7-93ae-92361f002671")));
-        user.setEmail("user@thingsboard.org");
+        user.setEmail("user@effi.ai");
         user.setFirstName("Jackson");
         user.setLastName("Roberts");
         ObjectMapper mapper = new ObjectMapper();
@@ -122,7 +122,7 @@ public class JpaUserDaoTest extends AbstractJpaDaoTest {
         user.setAdditionalInfo(jsonNode);
         userDao.save(AbstractServiceTest.SYSTEM_TENANT_ID,user);
         assertEquals(6, userDao.find(AbstractServiceTest.SYSTEM_TENANT_ID).size());
-        User savedUser = userDao.findByEmail(AbstractServiceTest.SYSTEM_TENANT_ID,"user@thingsboard.org");
+        User savedUser = userDao.findByEmail(AbstractServiceTest.SYSTEM_TENANT_ID,"user@effi.ai");
         assertNotNull(savedUser);
         assertEquals(additionalInfo, savedUser.getAdditionalInfo().toString());
     }
@@ -148,7 +148,7 @@ public class JpaUserDaoTest extends AbstractJpaDaoTest {
             user.setAuthority(Authority.CUSTOMER_USER);
         }
         String idString = id.toString();
-        String email = idString.substring(0, idString.indexOf('-')) + "@thingsboard.org";
+        String email = idString.substring(0, idString.indexOf('-')) + "@effi.ai";
         user.setEmail(email);
         userDao.save(AbstractServiceTest.SYSTEM_TENANT_ID,user);
     }

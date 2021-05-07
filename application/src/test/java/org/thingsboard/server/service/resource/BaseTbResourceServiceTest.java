@@ -95,7 +95,7 @@ public class BaseTbResourceServiceTest extends AbstractControllerTest {
         tenantAdmin = new User();
         tenantAdmin.setAuthority(Authority.TENANT_ADMIN);
         tenantAdmin.setTenantId(savedTenant.getId());
-        tenantAdmin.setEmail("tenant2@thingsboard.org");
+        tenantAdmin.setEmail("tenant2@effi.ai");
         tenantAdmin.setFirstName("Joe");
         tenantAdmin.setLastName("Downs");
 

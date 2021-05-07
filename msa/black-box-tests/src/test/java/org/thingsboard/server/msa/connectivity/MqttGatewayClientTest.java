@@ -67,7 +67,7 @@ public class MqttGatewayClientTest extends AbstractContainerTest {
 
     @Before
     public void createGateway() throws Exception {
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         this.gatewayDevice = createGatewayDevice();
         Optional<DeviceCredentials> gatewayDeviceCredentials = restClient.getDeviceCredentialsByDeviceId(gatewayDevice.getId());
         Assert.assertTrue(gatewayDeviceCredentials.isPresent());
@@ -107,7 +107,7 @@ public class MqttGatewayClientTest extends AbstractContainerTest {
     public void telemetryUploadWithTs() throws Exception {
         long ts = 1451649600512L;
 
-        restClient.login("tenant@thingsboard.org", "tenant");
+        restClient.login("tenant@effi.ai", "tenant");
         WsClient wsClient = subscribeToWebSocket(createdDevice.getId(), "LATEST_TELEMETRY", CmdsType.TS_SUB_CMDS);
         mqttClient.publish("v1/gateway/telemetry", Unpooled.wrappedBuffer(createGatewayPayload(createdDevice.getName(), ts).toString().getBytes())).get();
         WsTelemetryResponse actualLatestTelemetry = wsClient.getLastMessage();

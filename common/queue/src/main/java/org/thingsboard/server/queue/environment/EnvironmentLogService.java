@@ -33,7 +33,7 @@ public class EnvironmentLogService {
 
     @PostConstruct
     public void init() {
-        Environment.logEnv("ThingsBoard server environment: ", log);
+        Environment.logEnv("Effi.ai server environment: ", log);
     }
 
 }

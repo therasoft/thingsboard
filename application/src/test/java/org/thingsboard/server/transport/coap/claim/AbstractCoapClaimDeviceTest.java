@@ -66,7 +66,7 @@ public abstract class AbstractCoapClaimDeviceTest extends AbstractCoapIntegratio
         user.setAuthority(Authority.CUSTOMER_USER);
         user.setTenantId(savedTenant.getId());
         user.setCustomerId(savedCustomer.getId());
-        user.setEmail("customer@thingsboard.org");
+        user.setEmail("customer@effi.ai");
 
         customerAdmin = createUser(user, CUSTOMER_USER_PASSWORD);
         assertNotNull(customerAdmin);

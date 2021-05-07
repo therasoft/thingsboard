@@ -2,7 +2,7 @@
   "name": "thingsboard-web-ui",
   "private": true,
   "version": "3.3.0",
-  "description": "ThingsBoard Web UI Microservice",
+  "description": "Effi.ai Web UI Microservice",
   "main": "server.js",
   "bin": "server.js",
   "scripts": {

@@ -67,7 +67,7 @@ public abstract class BaseDeviceControllerTest extends AbstractControllerTest {
         tenantAdmin = new User();
         tenantAdmin.setAuthority(Authority.TENANT_ADMIN);
         tenantAdmin.setTenantId(savedTenant.getId());
-        tenantAdmin.setEmail("tenant2@thingsboard.org");
+        tenantAdmin.setEmail("tenant2@effi.ai");
         tenantAdmin.setFirstName("Joe");
         tenantAdmin.setLastName("Downs");
 
@@ -248,7 +248,7 @@ public abstract class BaseDeviceControllerTest extends AbstractControllerTest {
         User tenantAdmin2 = new User();
         tenantAdmin2.setAuthority(Authority.TENANT_ADMIN);
         tenantAdmin2.setTenantId(savedTenant2.getId());
-        tenantAdmin2.setEmail("tenant3@thingsboard.org");
+        tenantAdmin2.setEmail("tenant3@effi.ai");
         tenantAdmin2.setFirstName("Joe");
         tenantAdmin2.setLastName("Downs");
 
@@ -805,18 +805,18 @@ public abstract class BaseDeviceControllerTest extends AbstractControllerTest {
         User user = new User();
         user.setAuthority(Authority.TENANT_ADMIN);
         user.setTenantId(savedDifferentTenant.getId());
-        user.setEmail("tenant9@thingsboard.org");
+        user.setEmail("tenant9@effi.ai");
         user.setFirstName("Sam");
         user.setLastName("Downs");
 
         createUserAndLogin(user, "testPassword1");
 
-        login("tenant2@thingsboard.org", "testPassword1");
+        login("tenant2@effi.ai", "testPassword1");
         Device assignedDevice = doPost("/api/tenant/" + savedDifferentTenant.getId().getId() + "/device/" + savedDevice.getId().getId(), Device.class);
 
         doGet("/api/device/" + assignedDevice.getId().getId().toString(), Device.class, status().isNotFound());
 
-        login("tenant9@thingsboard.org", "testPassword1");
+        login("tenant9@effi.ai", "testPassword1");
 
         Device foundDevice1 = doGet("/api/device/" + assignedDevice.getId().getId().toString(), Device.class);
         Assert.assertNotNull(foundDevice1);
