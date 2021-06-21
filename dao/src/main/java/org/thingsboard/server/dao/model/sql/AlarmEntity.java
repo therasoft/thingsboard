@@ -19,7 +19,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.TypeDef;
 import org.thingsboard.server.common.data.alarm.Alarm;
-import org.thingsboard.server.common.data.alarm.AlarmInfo;
 import org.thingsboard.server.dao.util.mapping.JsonStringType;
 
 import javax.persistence.Entity;
@@ -36,10 +35,6 @@ public final class AlarmEntity extends AbstractAlarmEntity<Alarm> {
 
     public AlarmEntity() {
         super();
-    }
-
-    public AlarmEntity(AlarmInfo alarmInfo) {
-        super(alarmInfo);
     }
 
     public AlarmEntity(Alarm alarm) {
