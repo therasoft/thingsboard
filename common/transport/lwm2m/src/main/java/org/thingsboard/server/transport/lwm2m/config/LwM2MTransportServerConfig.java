@@ -57,20 +57,20 @@ public class LwM2MTransportServerConfig implements LwM2MSecureServerConfig {
     private boolean recommendedSupportedGroups;
 
     @Getter
-    @Value("${transport.lwm2m.response_pool_size:}")
-    private int responsePoolSize;
+    @Value("${transport.lwm2m.downlink_pool_size:}")
+    private int downlinkPoolSize;
 
     @Getter
-    @Value("${transport.lwm2m.registered_pool_size:}")
-    private int registeredPoolSize;
+    @Value("${transport.lwm2m.uplink_pool_size:}")
+    private int uplinkPoolSize;
 
     @Getter
-    @Value("${transport.lwm2m.update_registered_pool_size:}")
-    private int updateRegisteredPoolSize;
+    @Value("${transport.lwm2m.ota_pool_size:}")
+    private int otaPoolSize;
 
     @Getter
-    @Value("${transport.lwm2m.un_registered_pool_size:}")
-    private int unRegisteredPoolSize;
+    @Value("${transport.lwm2m.clean_period_in_sec:}")
+    private int cleanPeriodInSec;
 
     @Getter
     @Value("${transport.lwm2m.security.key_store_type:}")
@@ -148,9 +148,7 @@ public class LwM2MTransportServerConfig implements LwM2MSecureServerConfig {
             keyStoreValue = KeyStore.getInstance(keyStoreType);
             keyStoreValue.load(inKeyStore, keyStorePassword == null ? null : keyStorePassword.toCharArray());
         } catch (Exception e) {
-            log.warn("Unable to lookup LwM2M keystore. Reason: {}, {}" , uri, e.getMessage());
-//            Absence of the key store should not block user from using plain LwM2M
-//            throw new RuntimeException("Failed to lookup LwM2M keystore: " + (uri != null ? uri.toString() : ""), e);
+            log.info("Unable to lookup LwM2M keystore. Reason: {}, {}" , uri, e.getMessage());
         }
     }
 }
